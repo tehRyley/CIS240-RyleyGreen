@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">Uber Fare App</string>
+    <string name="txtMiles">Miles to Destination?</string>
+    <string name="txtCar">Vehicle Preference</string>
+    <string name="carSmart">Smart Car</string>
+    <string name="carSedan">Traditional Sedan</string>
+    <string name="carMinivan">Minivan</string>
+    <string name="smartPrice">+$2.00</string>
+    <string name="sedanPrice">+$0.00</string>
+    <string name="minivanPrice">+$5.00</string>
+    <string name="btnCost">Estimate Uber Cost</string>
 </resources>
