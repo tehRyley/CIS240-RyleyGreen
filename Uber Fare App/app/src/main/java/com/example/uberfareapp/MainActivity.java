@@ -30,21 +30,26 @@ public class MainActivity extends AppCompatActivity {
             radioButton = findViewById(selectedId);
             String radioVal = radioButton.getText().toString();
             double base = 3.00 + (miles * 3.25);
+            int value = 0;
             switch (radioVal) {
                 case "Smart Car":
                     cost = base + 2.00;
+                    value = 1;
                     break;
                 case "Traditional Sedan":
                     cost = base;
+                    value = 2;
                     break;
                 case "Minivan":
                     cost = base + 5.00;
+                    value = 3;
                     break;
             }
 
             SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
             SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.putString("Cost", String.valueOf(cost));
+            editor.putString("Value", String.valueOf(value));
             editor.putString("Miles", String.valueOf(miles));
             editor.putString("Car", radioVal);
             editor.apply();

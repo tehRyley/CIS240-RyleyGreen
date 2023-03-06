@@ -9,9 +9,6 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity2 extends AppCompatActivity {
-    private TextView txtChosenCar;
-    private TextView txtChosenMiles;
-    private TextView txtChosenTotal;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,12 +31,27 @@ public class MainActivity2 extends AppCompatActivity {
         String cost = sharedPreferences.getString("Cost", "");
         String miles = sharedPreferences.getString("Miles", "");
         String car = sharedPreferences.getString("Car", "");
+        String value = sharedPreferences.getString("Value", "");
 
-        txtChosenCar = findViewById(R.id.txtChosenCar);
-        txtChosenCar.setText(car);
-        txtChosenMiles = findViewById(R.id.txtChosenMiles);
-        txtChosenMiles.setText(miles + " Miles");
-        txtChosenTotal = findViewById(R.id.txtChosenTotal);
-        txtChosenTotal.setText("Total: " + "$" +cost);
+        switch (value) {
+            case "1":
+                value = " +$2";
+                break;
+            case "2":
+                value = "";
+                break;
+            case "3":
+                value = " +$5";
+                break;
+        }
+        TextView txtChosenCar = findViewById(R.id.txtChosenCar);
+        String carText = car + value;
+        txtChosenCar.setText(carText);
+        TextView txtChosenMiles = findViewById(R.id.txtChosenMiles);
+        String milesText = "$3 + " + "(" + miles + " Miles * $3.25)";
+        txtChosenMiles.setText(milesText);
+        TextView txtChosenTotal = findViewById(R.id.txtChosenTotal);
+        String totalText = "Total: " + "$" + cost;
+        txtChosenTotal.setText(totalText);
     }
 }
