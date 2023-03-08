@@ -34,7 +34,7 @@
         android:id="@+id/imgUber"
         android:layout_width="408dp"
         android:layout_height="247dp"
-        android:contentDescription="the driver"
+        android:contentDescription="@string/driver"
         android:src="@drawable/uber1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

@@ -12,4 +12,5 @@
     <string name="btnBack">Back</string>
     <string name="btnRequest">Request Ride</string>
     <string name="txtOnTheWay">Your driver Lloyd Christmas is on the way!</string>
+    <string name="driver">The uber driver</string>
 </resources>
