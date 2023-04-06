@@ -20,7 +20,9 @@ import androidx.core.content.ContextCompat;
 public class MainActivity extends AppCompatActivity {
     private int mLightOnColorId;
     private final String GAME_STATE = "gameState";
+    private final String GAME_COLOR = "gameColor";
     private LightsOutGame mGame;
+    private ColorActivity mColor;
     private GridLayout mLightGrid;
     private int mLightOnColor;
     private int mLightOffColor;
@@ -47,7 +49,9 @@ public class MainActivity extends AppCompatActivity {
             startGame();
         } else {
             String gameState = savedInstanceState.getString(GAME_STATE);
+            String gameColor = savedInstanceState.getString(GAME_COLOR);
             mGame.setState(gameState);
+//            mColor.setGameColor(Integer.parseInt(gameColor));
             setButtonColors();
         }
 
@@ -94,6 +98,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putString(GAME_STATE, mGame.getState());
+//        outState.putInt(GAME_COLOR, mColor.setGameColor(mLightOnColorId));
     }
 
     private void startGame() {
