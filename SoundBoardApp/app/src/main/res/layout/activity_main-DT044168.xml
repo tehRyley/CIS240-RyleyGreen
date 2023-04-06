@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <ImageView
+        android:id="@+id/ding"
+        android:layout_width="164dp"
+        android:layout_height="137dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnJoin"
+        app:srcCompat="@drawable/ding" />
+
+    <ImageView
+        android:id="@+id/notif"
+        android:layout_width="204dp"
+        android:layout_height="88dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/disnotif" />
+
+    <ImageView
+        android:id="@+id/leave"
+        android:layout_width="180dp"
+        android:layout_height="187dp"
+        android:layout_marginTop="4dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/notif"
+        app:srcCompat="@drawable/maxresdefault" />
+
+    <ImageView
+        android:id="@+id/pew"
+        android:layout_width="186dp"
+        android:layout_height="146dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ding"
+        app:srcCompat="@drawable/pew" />
+
+    <ImageView
+        android:id="@+id/reh"
+        android:layout_width="224dp"
+        android:layout_height="128dp"
+        android:layout_marginTop="12dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/leave"
+        app:srcCompat="@drawable/scoob" />
+
+    <ImageView
+        android:id="@+id/sponge"
+        android:layout_width="179dp"
+        android:layout_height="253dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/pew"
+        app:srcCompat="@drawable/sponge" />
+
+    <ImageView
+        android:id="@+id/vio"
+        android:layout_width="229dp"
+        android:layout_height="186dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/reh"
+        app:srcCompat="@drawable/violin" />
+
+    <ImageView
+        android:id="@+id/btnJoin"
+        android:layout_width="206dp"
+        android:layout_height="95dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/disjoin" />
+</androidx.constraintlayout.widget.ConstraintLayout>
