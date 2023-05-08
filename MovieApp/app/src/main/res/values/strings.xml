@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">Movie App</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="movie_title">Movie Title</string>
+    <string name="release">Release</string>
+    <string name="Rating">Rating</string>
+    <string name="random_movie">Random Movie</string>
+    <string name="description">Description</string>
+    <string name="release_date">Release Date:</string>
+    <string name="user_rating">User Rating:</string>
 </resources>
