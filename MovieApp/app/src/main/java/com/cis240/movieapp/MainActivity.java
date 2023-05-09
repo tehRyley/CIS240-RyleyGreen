@@ -28,11 +28,12 @@ public class MainActivity extends AppCompatActivity {
     private final String MOVIE_STATE = "movieState";
     static int ind = rand.nextInt(19);
     static int page = (rand.nextInt(19)) + 1;
-     static ImageView imageView;
-    static TextView titleView;
-    static TextView releaseView;
-    static TextView scoreView;
-    static TextView descView;
+    ImageView imageView;
+    TextView titleView;
+    TextView releaseView;
+    TextView scoreView;
+    TextView descView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,11 +57,11 @@ public class MainActivity extends AppCompatActivity {
             movieLoader(ind, page);
         } else {
             String movieState = savedInstanceState.getString(MOVIE_STATE);
-            MovieBuilder.setState(movieState);
+            setState(movieState);
         }
     }
 
-    public static void movieLoader(int ind, int page) {
+    public void movieLoader(int ind, int page) {
         String urlPop = "https://api.themoviedb.org/3/discover/movie?api_key=8159d23abb93295d11bd8c077eb4629d&language=en-US&sort_by=popularity.desc&include_adult=false&page=" + page;
         StringRequest request = new StringRequest(Request.Method.GET, urlPop, response -> {
             try {
@@ -71,18 +72,28 @@ public class MainActivity extends AppCompatActivity {
                 String score = String.valueOf(result.getJSONObject(ind).get("vote_average"));
                 String poster = result.getJSONObject(ind).get("poster_path").toString();
                 String desc = result.getJSONObject(ind).get("overview").toString();
-                MovieBuilder.buildMovie(title, release, score, poster, desc);
+                MovieBuilder.buildMovie(title, release, score, poster, desc, imageView, titleView, releaseView, descView, scoreView);
             } catch (JSONException e) {
                 throw new RuntimeException(e);
             }
-        }, error -> Log.d("error",error.toString()));
+        }, error -> Log.d("error", error.toString()));
         queue.add(request);
     }
 
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putString(MOVIE_STATE, MovieBuilder.getState());
+        outState.putString(MOVIE_STATE, getState());
+    }
+
+    public static String getState() {
+        return "ind:" + MainActivity.ind + "one" + "page:" + MainActivity.page + "two";
+    }
+
+    public void setState(String movieState) {
+        int ind = Integer.parseInt(movieState.substring(movieState.indexOf("ind") + 4, movieState.lastIndexOf("one")));
+        int page = Integer.parseInt(movieState.substring(movieState.indexOf("page") + 5, movieState.lastIndexOf("two")));
+        movieLoader(ind, page);
     }
 
 }
