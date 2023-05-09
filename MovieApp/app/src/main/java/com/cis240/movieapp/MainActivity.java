@@ -4,17 +4,23 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.SearchView;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
+
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.Objects;
 import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
@@ -24,11 +30,16 @@ public class MainActivity extends AppCompatActivity {
     private final String MOVIE_STATE = "movieState";
     static int ind = rand.nextInt(19);
     static int page = (rand.nextInt(19)) + 1;
+    static String urlPop = "https://api.themoviedb.org/3/discover/movie?api_key=8159d23abb93295d11bd8c077eb4629d&language=en-US&sort_by=popularity.desc&include_adult=false&page=" + page;
+    static String query;
+    static String searchUrl = "https://api.themoviedb.org/3/search/movie?api_key=8159d23abb93295d11bd8c077eb4629d&language=en-US&query="+ query +"&page=1&include_adult=false";
+    static int searchToggle = 0;
     ImageView imageView;
     TextView titleView;
     TextView releaseView;
     TextView scoreView;
     TextView descView;
+    SearchView searchView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,30 +53,58 @@ public class MainActivity extends AppCompatActivity {
         releaseView = findViewById(R.id.release);
         scoreView = findViewById(R.id.rating);
         descView = findViewById(R.id.desc);
+        searchView = findViewById(R.id.searchView2);
+        searchView.clearFocus();
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                searchMovie(s);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                return false;
+            }
+        });
         queue = Volley.newRequestQueue(this);
         //Button to get new index and page then build movie
         Button button = findViewById(R.id.movieGen);
         button.setOnClickListener(view -> {
             ind = rand.nextInt(19);
             page = (rand.nextInt(19)) + 1;
-            movieLoader(ind, page);
+            urlPop = "https://api.themoviedb.org/3/discover/movie?api_key=8159d23abb93295d11bd8c077eb4629d&language=en-US&sort_by=popularity.desc&include_adult=false&page=" + page;
+            movieLoader(ind, urlPop);
         });
         //Check for saved instance
         if (savedInstanceState == null) {
             ind = rand.nextInt(19);
             page = (rand.nextInt(19)) + 1;
-            movieLoader(ind, page);
+            urlPop = "https://api.themoviedb.org/3/discover/movie?api_key=8159d23abb93295d11bd8c077eb4629d&language=en-US&sort_by=popularity.desc&include_adult=false&page=" + page;
+            movieLoader(ind, urlPop);
         } else {
             String movieState = savedInstanceState.getString(MOVIE_STATE);
             setState(movieState);
         }
     }
 
+    private void searchMovie(String query) {
+        searchUrl = "https://api.themoviedb.org/3/search/movie?api_key=8159d23abb93295d11bd8c077eb4629d&language=en-US&query="+ query +"&page=1&include_adult=false";
+        ind = 0;
+        page = 1;
+        searchToggle = 1;
+        movieLoader(0, searchUrl);
+    }
+
     //Volley request and parse JSON for required info
-    public void movieLoader(int ind, int page) {
+    public void movieLoader(int ind, String url) {
+        if (Objects.equals(url, urlPop)) {
+            searchToggle = 0;
+        } else {
+            searchToggle = 1;
+        }
         //Grabs random page from TMDB API with a set of parameters (Rarely movies get passed the TMDB filters)
-        String urlPop = "https://api.themoviedb.org/3/discover/movie?api_key=8159d23abb93295d11bd8c077eb4629d&language=en-US&sort_by=popularity.desc&include_adult=false&page=" + page;
-        StringRequest request = new StringRequest(Request.Method.GET, urlPop, response -> {
+        StringRequest request = new StringRequest(Request.Method.GET, url, response -> {
             try {
                 JSONObject root = new JSONObject(response);
                 JSONArray result = root.getJSONArray("results");
@@ -83,6 +122,8 @@ public class MainActivity extends AppCompatActivity {
         queue.add(request);
     }
 
+
+
     //Grabs current index and page into string
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
@@ -92,14 +133,20 @@ public class MainActivity extends AppCompatActivity {
 
 
     public static String getState() {
-        return "ind:" + MainActivity.ind + "one" + "page:" + MainActivity.page + "two";
+        return "ind:" + ind + "one" + "page:" + page + "two" + searchToggle;
     }
 
     //Parse current index and page to maintain same movie
     public void setState(String movieState) {
-        int ind = Integer.parseInt(movieState.substring(movieState.indexOf("ind") + 4, movieState.lastIndexOf("one")));
-        int page = Integer.parseInt(movieState.substring(movieState.indexOf("page") + 5, movieState.lastIndexOf("two")));
-        movieLoader(ind, page);
-    }
+         searchToggle = Integer.parseInt(movieState.substring(movieState.indexOf("two") + 3));
+         if (searchToggle == 0) {
+             ind = Integer.parseInt(movieState.substring(movieState.indexOf("ind") + 4, movieState.lastIndexOf("one")));
+             page = Integer.parseInt(movieState.substring(movieState.indexOf("page") + 5, movieState.lastIndexOf("two")));
+             urlPop = "https://api.themoviedb.org/3/discover/movie?api_key=8159d23abb93295d11bd8c077eb4629d&language=en-US&sort_by=popularity.desc&include_adult=false&page=" + page;
+             movieLoader(ind, urlPop);
+         } else {
+             movieLoader(0, searchUrl);
+         }
 
+    }
 }
