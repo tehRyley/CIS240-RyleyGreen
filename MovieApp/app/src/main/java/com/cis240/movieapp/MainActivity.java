@@ -63,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
 
     //Volley request and parse JSON for required info
     public void movieLoader(int ind, int page) {
+        //Grabs random page from TMDB API with a set of parameters (Rarely movies get passed the TMDB filters)
         String urlPop = "https://api.themoviedb.org/3/discover/movie?api_key=8159d23abb93295d11bd8c077eb4629d&language=en-US&sort_by=popularity.desc&include_adult=false&page=" + page;
         StringRequest request = new StringRequest(Request.Method.GET, urlPop, response -> {
             try {
