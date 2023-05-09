@@ -1,12 +1,8 @@
 package com.cis240.movieapp;
 
-import android.widget.ImageView;
+import static java.lang.Double.parseDouble;
+import android.graphics.Color;
 import com.squareup.picasso.Picasso;
-
-import java.time.LocalDate;
-import java.util.Calendar;
-import java.util.Date;
-
 public class MovieBuilder {
     static String posterUrl = "https://image.tmdb.org/t/p/w500";
     public static void buildMovie(String title, String release, String score, String poster, String desc) {
@@ -15,10 +11,33 @@ public class MovieBuilder {
         MainActivity.releaseView.setText(release);
         MainActivity.descView.setText(desc);
         if (score.equals("0")) {
-            MainActivity.scoreView.setText("Not Released");
+            String notReleased = "Not Released";
+            MainActivity.scoreView.setText(notReleased);
+            MainActivity.scoreView.setTextColor(Color.WHITE);
         } else {
-            MainActivity.scoreView.setText(score + "/10");
+            String newScore = score + "/10";
+            MainActivity.scoreView.setText(newScore);
+            if (parseDouble(score) < 5) {
+                MainActivity.scoreView.setTextColor(Color.RED);
+            } else if (parseDouble(score) > 7) {
+                MainActivity.scoreView.setTextColor(Color.GREEN);
+            } else {
+                MainActivity.scoreView.setTextColor(Color.YELLOW);
+            }
         }
+    }
+
+    public static String getState() {
+        return "ind:" +
+                MainActivity.ind + "one" +
+                "page:" +
+                MainActivity.page + "two";
+    }
+
+    public static void setState(String movieState) {
+        int ind = Integer.parseInt(movieState.substring(movieState.indexOf("ind")+4, movieState.lastIndexOf("one")));
+        int page = Integer.parseInt(movieState.substring(movieState.indexOf("page")+5, movieState.lastIndexOf("two")));
+        MainActivity.movieLoader(ind, page);
     }
 
 }
