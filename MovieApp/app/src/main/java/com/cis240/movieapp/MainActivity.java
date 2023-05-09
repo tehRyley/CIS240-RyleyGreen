@@ -23,7 +23,6 @@ import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
     static Random rand = new Random();
-    static JSONObject root;
     static RequestQueue queue;
     private final String MOVIE_STATE = "movieState";
     static int ind = rand.nextInt(19);
@@ -65,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
         String urlPop = "https://api.themoviedb.org/3/discover/movie?api_key=8159d23abb93295d11bd8c077eb4629d&language=en-US&sort_by=popularity.desc&include_adult=false&page=" + page;
         StringRequest request = new StringRequest(Request.Method.GET, urlPop, response -> {
             try {
-                root = new JSONObject(response);
+                JSONObject root = new JSONObject(response);
                 JSONArray result = root.getJSONArray("results");
                 String title = result.getJSONObject(ind).get("title").toString();
                 String release = result.getJSONObject(ind).get("release_date").toString();
