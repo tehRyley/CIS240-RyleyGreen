@@ -17,7 +17,7 @@ public class MovieBuilder {
         releaseView.setText(release);
         descView.setText(desc);
         if (score.equals("0")) {
-            String notReleased = "Not Released";
+            String notReleased = "Unreleased";
             scoreView.setText(notReleased);
             scoreView.setTextColor(Color.WHITE);
         } else {
