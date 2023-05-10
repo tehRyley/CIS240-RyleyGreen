@@ -75,6 +75,9 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public boolean onQueryTextChange(String s) {
+                if (s.length() > 0) {
+                    searchMovie(s);
+                }
                 return false;
             }
         });
@@ -128,26 +131,34 @@ public class MainActivity extends AppCompatActivity {
         } else {
             searchToggle = 1;
         }
+
+        //Future reference
+        //https://api.themoviedb.org/3/movie/575322/credits?api_key=8159d23abb93295d11bd8c077eb4629d&language=en-US <movie cast call
+        //https://image.tmdb.org/t/p/w500/yQceTOuTGiNuy31LuehQW432t7p.jpg <cast image
+
         //Grabs random page from TMDB API with a set of parameters (Rarely movies get passed the TMDB filters)
         StringRequest request = new StringRequest(Request.Method.GET, url, response -> {
             try {
                 JSONObject root = new JSONObject(response);
                 JSONArray result = root.getJSONArray("results");
-                String title = result.getJSONObject(ind).get("title").toString();
-                String release = result.getJSONObject(ind).get("release_date").toString();
-                String score = String.valueOf(result.getJSONObject(ind).get("vote_average"));
-                String poster = result.getJSONObject(ind).get("poster_path").toString();
-                String desc = result.getJSONObject(ind).get("overview").toString();
-                if (favorites.contains(title)) {
-                    favBtn.setBackgroundColor(getResources().getColor(R.color.dark));
-                    favBtn.setTextColor(getResources().getColor(R.color.grey));
-                    favBtn.setText(unfavorite);
-                } else {
-                    favBtn.setBackgroundColor(getResources().getColor(R.color.yellow));
-                    favBtn.setTextColor(getResources().getColor(R.color.black));
-                    favBtn.setText(favorite);
+                //Checks if result is empty or not
+                if (result.length() > 0) {
+                    String title = result.getJSONObject(ind).get("title").toString();
+                    String release = result.getJSONObject(ind).get("release_date").toString();
+                    String score = String.valueOf(result.getJSONObject(ind).get("vote_average"));
+                    String poster = result.getJSONObject(ind).get("poster_path").toString();
+                    String desc = result.getJSONObject(ind).get("overview").toString();
+                    if (favorites.contains(title)) {
+                        favBtn.setBackgroundColor(getResources().getColor(R.color.dark));
+                        favBtn.setTextColor(getResources().getColor(R.color.grey));
+                        favBtn.setText(unfavorite);
+                    } else {
+                        favBtn.setBackgroundColor(getResources().getColor(R.color.yellow));
+                        favBtn.setTextColor(getResources().getColor(R.color.black));
+                        favBtn.setText(favorite);
+                    }
+                    MovieBuilder.buildMovie(title, release, score, poster, desc, imageView, titleView, releaseView, descView, scoreView);
                 }
-                MovieBuilder.buildMovie(title, release, score, poster, desc, imageView, titleView, releaseView, descView, scoreView);
             } catch (JSONException e) {
                 throw new RuntimeException(e);
             }
