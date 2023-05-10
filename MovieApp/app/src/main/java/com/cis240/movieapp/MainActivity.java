@@ -1,5 +1,8 @@
 package com.cis240.movieapp;
 
+
+import static com.cis240.movieapp.FavoriteList.favorites;
+
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
@@ -12,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 
 import com.android.volley.Request;
+
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
@@ -23,6 +27,7 @@ import org.json.JSONObject;
 import java.util.Objects;
 import java.util.Random;
 
+@SuppressWarnings("deprecation")
 public class MainActivity extends AppCompatActivity {
     //Declare some variables
     static Random rand = new Random();
@@ -34,12 +39,16 @@ public class MainActivity extends AppCompatActivity {
     static String query;
     static String searchUrl = "https://api.themoviedb.org/3/search/movie?api_key=8159d23abb93295d11bd8c077eb4629d&language=en-US&query="+ query +"&page=1&include_adult=false";
     static int searchToggle = 0;
+    int yellow = R.color.yellow;
+    String unfavorite = "Unfavorite";
+    String favorite = "Favorite";
     ImageView imageView;
     TextView titleView;
     TextView releaseView;
     TextView scoreView;
     TextView descView;
     SearchView searchView;
+    Button favBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,8 +60,10 @@ public class MainActivity extends AppCompatActivity {
         imageView = findViewById(R.id.poster);
         titleView = findViewById(R.id.title);
         releaseView = findViewById(R.id.release);
+        favBtn = findViewById(R.id.button);
         scoreView = findViewById(R.id.rating);
         descView = findViewById(R.id.desc);
+        //When tested on physical device the search bar doesn't auto focus (makes it less annoying)
         searchView = findViewById(R.id.searchView2);
         searchView.clearFocus();
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -86,6 +97,20 @@ public class MainActivity extends AppCompatActivity {
             String movieState = savedInstanceState.getString(MOVIE_STATE);
             setState(movieState);
         }
+        favBtn.setBackgroundColor(getResources().getColor(yellow));
+        favBtn.setOnClickListener(view -> {
+            if (favorites.contains(titleView.getText().toString())) {
+                favorites.remove(titleView.getText().toString());
+                favBtn.setBackgroundColor(getResources().getColor(R.color.yellow));
+                favBtn.setTextColor(getResources().getColor(R.color.black));
+                favBtn.setText(favorite);
+            } else {
+                favorites.add(titleView.getText().toString());
+                favBtn.setBackgroundColor(getResources().getColor(R.color.dark));
+                favBtn.setTextColor(getResources().getColor(R.color.grey));
+                favBtn.setText(unfavorite);
+            }
+        });
     }
 
     private void searchMovie(String query) {
@@ -113,7 +138,15 @@ public class MainActivity extends AppCompatActivity {
                 String score = String.valueOf(result.getJSONObject(ind).get("vote_average"));
                 String poster = result.getJSONObject(ind).get("poster_path").toString();
                 String desc = result.getJSONObject(ind).get("overview").toString();
-                //Send gathered data to fill in movie activity
+                if (favorites.contains(title)) {
+                    favBtn.setBackgroundColor(getResources().getColor(R.color.dark));
+                    favBtn.setTextColor(getResources().getColor(R.color.grey));
+                    favBtn.setText(unfavorite);
+                } else {
+                    favBtn.setBackgroundColor(getResources().getColor(R.color.yellow));
+                    favBtn.setTextColor(getResources().getColor(R.color.black));
+                    favBtn.setText(favorite);
+                }
                 MovieBuilder.buildMovie(title, release, score, poster, desc, imageView, titleView, releaseView, descView, scoreView);
             } catch (JSONException e) {
                 throw new RuntimeException(e);
@@ -121,8 +154,6 @@ public class MainActivity extends AppCompatActivity {
         }, error -> Log.d("error", error.toString()));
         queue.add(request);
     }
-
-
 
     //Grabs current index and page into string
     @Override

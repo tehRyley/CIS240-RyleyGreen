@@ -1,11 +1,9 @@
 package com.cis240.movieapp;
 
 import static java.lang.Double.parseDouble;
-
 import android.graphics.Color;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.squareup.picasso.Picasso;
 
 public class MovieBuilder {
