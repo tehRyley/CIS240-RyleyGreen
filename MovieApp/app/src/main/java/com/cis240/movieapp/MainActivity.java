@@ -56,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         //Set initial night mode
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
         //Set to nodes
         imageView = findViewById(R.id.poster);
         titleView = findViewById(R.id.title);
