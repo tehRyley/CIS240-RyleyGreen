@@ -2,28 +2,22 @@ package com.cis240.movieapp;
 
 
 import static com.cis240.movieapp.FavoriteList.favorites;
-
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.SearchView;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
-
 import com.android.volley.Request;
-
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.util.Objects;
 import java.util.Random;
 
@@ -56,7 +50,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         //Set initial night mode
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
         //Set to nodes
         imageView = findViewById(R.id.poster);
         titleView = findViewById(R.id.title);

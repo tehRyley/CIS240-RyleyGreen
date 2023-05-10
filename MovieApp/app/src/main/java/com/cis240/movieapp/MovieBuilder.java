@@ -20,7 +20,7 @@ public class MovieBuilder {
             scoreView.setText(notReleased);
             scoreView.setTextColor(Color.WHITE);
         } else {
-            String newScore = score + "/10";
+            String newScore = parseDouble(score) + "/10";
             scoreView.setText(newScore);
             if (parseDouble(score) < 5) {
                 scoreView.setTextColor(Color.RED);
