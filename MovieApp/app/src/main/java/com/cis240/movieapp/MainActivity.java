@@ -1,7 +1,9 @@
 package com.cis240.movieapp;
 
-
+import static com.cis240.movieapp.FavoriteList.favFile;
 import static com.cis240.movieapp.FavoriteList.favorites;
+import static com.cis240.movieapp.FavoriteList.readFromFile;
+import static com.cis240.movieapp.FavoriteList.writeToFile;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
@@ -18,6 +20,7 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import java.io.IOException;
 import java.util.Objects;
 import java.util.Random;
 
@@ -31,11 +34,12 @@ public class MainActivity extends AppCompatActivity {
     static int page = (rand.nextInt(19)) + 1;
     static String urlPop = "https://api.themoviedb.org/3/discover/movie?api_key=8159d23abb93295d11bd8c077eb4629d&language=en-US&sort_by=popularity.desc&include_adult=false&page=" + page;
     static String query;
-    static String searchUrl = "https://api.themoviedb.org/3/search/movie?api_key=8159d23abb93295d11bd8c077eb4629d&language=en-US&query="+ query +"&page=1&include_adult=false";
+    static String searchUrl = "https://api.themoviedb.org/3/search/movie?api_key=8159d23abb93295d11bd8c077eb4629d&language=en-US&query=" + query + "&page=1&include_adult=false";
     static int searchToggle = 0;
     int yellow = R.color.yellow;
     String unfavorite = "Unfavorite";
     String favorite = "Favorite";
+    String id;
     ImageView imageView;
     TextView titleView;
     TextView releaseView;
@@ -44,12 +48,22 @@ public class MainActivity extends AppCompatActivity {
     SearchView searchView;
     Button favBtn;
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         //Set initial night mode
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        //Read File to keep favorites
+        try {
+            if (favFile.getName().equals("favorites.txt")) {
+                readFromFile(this);
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         //Set to nodes
         imageView = findViewById(R.id.poster);
         titleView = findViewById(R.id.title);
@@ -96,22 +110,27 @@ public class MainActivity extends AppCompatActivity {
         }
         favBtn.setBackgroundColor(getResources().getColor(yellow));
         favBtn.setOnClickListener(view -> {
-            if (favorites.contains(titleView.getText().toString())) {
-                favorites.remove(titleView.getText().toString());
+            if (favorites.contains(id)) {
+                favorites.remove(id);
                 favBtn.setBackgroundColor(getResources().getColor(R.color.yellow));
                 favBtn.setTextColor(getResources().getColor(R.color.black));
                 favBtn.setText(favorite);
             } else {
-                favorites.add(titleView.getText().toString());
+                favorites.add(id);
                 favBtn.setBackgroundColor(getResources().getColor(R.color.dark));
                 favBtn.setTextColor(getResources().getColor(R.color.grey));
                 favBtn.setText(unfavorite);
+            }
+            try {
+                writeToFile(this);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
             }
         });
     }
 
     private void searchMovie(String query) {
-        searchUrl = "https://api.themoviedb.org/3/search/movie?api_key=8159d23abb93295d11bd8c077eb4629d&language=en-US&query="+ query +"&page=1&include_adult=false";
+        searchUrl = "https://api.themoviedb.org/3/search/movie?api_key=8159d23abb93295d11bd8c077eb4629d&language=en-US&query=" + query + "&page=1&include_adult=false";
         ind = 0;
         page = 1;
         searchToggle = 1;
@@ -142,7 +161,8 @@ public class MainActivity extends AppCompatActivity {
                     String score = String.valueOf(result.getJSONObject(ind).get("vote_average"));
                     String poster = result.getJSONObject(ind).get("poster_path").toString();
                     String desc = result.getJSONObject(ind).get("overview").toString();
-                    if (favorites.contains(title)) {
+                    id = String.valueOf(result.getJSONObject(ind).get("id"));
+                    if (favorites.contains(id)) {
                         favBtn.setBackgroundColor(getResources().getColor(R.color.dark));
                         favBtn.setTextColor(getResources().getColor(R.color.grey));
                         favBtn.setText(unfavorite);
@@ -174,15 +194,15 @@ public class MainActivity extends AppCompatActivity {
 
     //Parse current index and page to maintain same movie
     public void setState(String movieState) {
-         searchToggle = Integer.parseInt(movieState.substring(movieState.indexOf("two") + 3));
-         if (searchToggle == 0) {
-             ind = Integer.parseInt(movieState.substring(movieState.indexOf("ind") + 4, movieState.lastIndexOf("one")));
-             page = Integer.parseInt(movieState.substring(movieState.indexOf("page") + 5, movieState.lastIndexOf("two")));
-             urlPop = "https://api.themoviedb.org/3/discover/movie?api_key=8159d23abb93295d11bd8c077eb4629d&language=en-US&sort_by=popularity.desc&include_adult=false&page=" + page;
-             movieLoader(ind, urlPop);
-         } else {
-             movieLoader(0, searchUrl);
-         }
+        searchToggle = Integer.parseInt(movieState.substring(movieState.indexOf("two") + 3));
+        if (searchToggle == 0) {
+            ind = Integer.parseInt(movieState.substring(movieState.indexOf("ind") + 4, movieState.lastIndexOf("one")));
+            page = Integer.parseInt(movieState.substring(movieState.indexOf("page") + 5, movieState.lastIndexOf("two")));
+            urlPop = "https://api.themoviedb.org/3/discover/movie?api_key=8159d23abb93295d11bd8c077eb4629d&language=en-US&sort_by=popularity.desc&include_adult=false&page=" + page;
+            movieLoader(ind, urlPop);
+        } else {
+            movieLoader(0, searchUrl);
+        }
 
     }
 }
