@@ -4,11 +4,9 @@ import static com.cis240.movieapp.FavoriteList.favFile;
 import static com.cis240.movieapp.FavoriteList.favorites;
 import static com.cis240.movieapp.FavoriteList.readFromFile;
 import static com.cis240.movieapp.FavoriteList.writeToFile;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.SearchView;
@@ -16,8 +14,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
-import androidx.fragment.app.FragmentManager;
-
+import androidx.core.content.ContextCompat;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.StringRequest;
@@ -64,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
         //Read File to keep favorites
         try {
-            if (favFile.getName().equals("favorites.txt")) {
+            if (favFile.exists()) {
                 readFromFile(this);
             }
         } catch (IOException e) {
@@ -105,7 +102,6 @@ public class MainActivity extends AppCompatActivity {
             if (favorites.size() > 0) {
                 Intent intent = new Intent(MainActivity.this, MainActivity2.class);
                 startActivity(intent);
-                System.out.println(favorites.toString());
             }
         });
         queue = Volley.newRequestQueue(this);
@@ -131,13 +127,13 @@ public class MainActivity extends AppCompatActivity {
         favBtn.setOnClickListener(view -> {
             if (favorites.contains(id)) {
                 favorites.remove(id);
-                favBtn.setBackgroundColor(getResources().getColor(R.color.yellow));
-                favBtn.setTextColor(getResources().getColor(R.color.black));
+                favBtn.setBackgroundColor(ContextCompat.getColor(this, R.color.yellow));
+                favBtn.setTextColor(ContextCompat.getColor(this, R.color.black));
                 favBtn.setText(favorite);
             } else {
                 favorites.add(id);
-                favBtn.setBackgroundColor(getResources().getColor(R.color.dark));
-                favBtn.setTextColor(getResources().getColor(R.color.grey));
+                favBtn.setBackgroundColor(ContextCompat.getColor(this, R.color.dark));
+                favBtn.setTextColor(ContextCompat.getColor(this, R.color.grey));
                 favBtn.setText(unfavorite);
             }
             if (favorites.size() > 0) {

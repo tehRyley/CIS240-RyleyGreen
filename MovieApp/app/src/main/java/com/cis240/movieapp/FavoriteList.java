@@ -34,7 +34,7 @@ public class FavoriteList extends AppCompatActivity {
                 favorites.add(line);
             }
         } catch (FileNotFoundException e) {
-
+            throw new RuntimeException(e);
         }
     }
 }

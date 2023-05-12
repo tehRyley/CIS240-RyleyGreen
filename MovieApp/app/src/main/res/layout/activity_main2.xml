@@ -6,19 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity2">
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/favorites_bg"
-        android:text="Favorites"
-        android:textAlignment="center"
-        android:textColor="#A1887F"
-        android:textSize="34sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <ScrollView
         android:id="@+id/scrollView2"
         android:layout_width="wrap_content"
@@ -33,12 +20,26 @@
             android:layout_height="wrap_content"
             tools:context=".MainActivity">
 
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="400dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/favorites_bg"
+                android:text="@string/favorites"
+                android:textAlignment="center"
+                android:textColor="#A1887F"
+                android:textSize="34sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
             <Button
                 android:id="@+id/backBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:text="Back"
+                android:text="@string/back"
                 android:textSize="20sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -48,11 +49,11 @@
                 android:id="@+id/poster"
                 android:layout_width="400dp"
                 android:layout_height="400dp"
-                android:layout_marginTop="50dp"
+                android:layout_marginTop="5dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView"
                 tools:ignore="ContentDescription,ImageContrastCheck"
                 tools:srcCompat="@tools:sample/avatars" />
 
@@ -144,28 +145,30 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.501"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/imageForward"
+                app:layout_constraintTop_toBottomOf="@+id/rightBtn"
                 tools:ignore="TextContrastCheck" />
 
             <ImageView
-                android:id="@+id/imageForward"
+                android:id="@+id/rightBtn"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
                 android:layout_marginTop="5dp"
                 android:layout_marginEnd="100dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/desc"
-                app:srcCompat="@drawable/baseline_arrow_forward_24" />
+                app:srcCompat="@drawable/baseline_arrow_forward_24"
+                tools:ignore="ContentDescription,ImageContrastCheck" />
 
             <ImageView
-                android:id="@+id/imageView5"
+                android:id="@+id/leftBtn"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
                 android:layout_marginStart="100dp"
                 android:layout_marginTop="5dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/desc"
-                app:srcCompat="@drawable/baseline_arrow_back_24" />
+                app:srcCompat="@drawable/baseline_arrow_back_24"
+                tools:ignore="ContentDescription,ImageContrastCheck" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

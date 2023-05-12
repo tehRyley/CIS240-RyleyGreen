@@ -22,7 +22,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toStartOf="@+id/searchView2"
-                app:layout_constraintTop_toBottomOf="@+id/button"
+                app:layout_constraintTop_toBottomOf="@+id/searchView2"
                 tools:ignore="ContentDescription,ImageContrastCheck"
                 tools:srcCompat="@tools:sample/avatars" />
 
@@ -100,7 +100,7 @@
                 android:textSize="20sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/searchView2"
+                app:layout_constraintTop_toBottomOf="@+id/button"
                 tools:ignore="TextContrastCheck" />
 
             <TextView
@@ -130,7 +130,7 @@
                 android:queryHint="Search Movie..."
                 app:layout_constraintEnd_toStartOf="@+id/favoritesView"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"></SearchView>
+                app:layout_constraintTop_toTopOf="parent"/>
 
             <Button
                 android:id="@+id/button"
@@ -142,7 +142,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.501"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/movieGen"
+                app:layout_constraintTop_toBottomOf="@+id/desc"
                 tools:ignore="TextContrastCheck" />
 
             <ImageView

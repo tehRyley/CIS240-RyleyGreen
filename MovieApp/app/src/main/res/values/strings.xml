@@ -10,4 +10,6 @@
     <string name="release_date">Release Date:</string>
     <string name="user_rating">User Rating:</string>
     <string name="favorite">Favorite</string>
+    <string name="favorites">Favorites</string>
+    <string name="back">Back</string>
 </resources>
