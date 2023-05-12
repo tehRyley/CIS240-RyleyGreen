@@ -1,9 +1,10 @@
 package com.cis240.movieapp;
 
-import static com.cis240.movieapp.FavoriteList.favFile;
 import static com.cis240.movieapp.FavoriteList.favorites;
 import static com.cis240.movieapp.FavoriteList.readFromFile;
 import static com.cis240.movieapp.FavoriteList.writeToFile;
+
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,14 +12,17 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.SearchView;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.content.ContextCompat;
+
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -42,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
     static int searchToggle = 0;
     int yellow = R.color.yellow;
     String unfavorite = "Unfavorite";
+    @SuppressLint("SdCardPath")
     File path = new File("/data/user/0/com.cis240.movieapp/files/favorites.txt");
     String favorite = "Favorite";
     String id;
@@ -66,8 +71,6 @@ public class MainActivity extends AppCompatActivity {
         try {
             if (path.exists()) {
                 readFromFile(this);
-            } else {
-                System.out.println("BROKENQFQ EWFQW");
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
