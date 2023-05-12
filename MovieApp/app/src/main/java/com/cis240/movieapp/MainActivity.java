@@ -4,8 +4,11 @@ import static com.cis240.movieapp.FavoriteList.favFile;
 import static com.cis240.movieapp.FavoriteList.favorites;
 import static com.cis240.movieapp.FavoriteList.readFromFile;
 import static com.cis240.movieapp.FavoriteList.writeToFile;
+
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.SearchView;
@@ -13,6 +16,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.fragment.app.FragmentManager;
+
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.StringRequest;
@@ -40,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
     String unfavorite = "Unfavorite";
     String favorite = "Favorite";
     String id;
+    ImageView favoritesButton;
     ImageView imageView;
     TextView titleView;
     TextView releaseView;
@@ -69,6 +75,7 @@ public class MainActivity extends AppCompatActivity {
         titleView = findViewById(R.id.title);
         releaseView = findViewById(R.id.release);
         favBtn = findViewById(R.id.button);
+        favoritesButton = findViewById(R.id.favoritesView);
         scoreView = findViewById(R.id.rating);
         descView = findViewById(R.id.desc);
         //When tested on physical device the search bar doesn't auto focus (makes it less annoying)
@@ -87,6 +94,18 @@ public class MainActivity extends AppCompatActivity {
                     searchMovie(s);
                 }
                 return false;
+            }
+        });
+        if (favorites.size() > 0) {
+            favoritesButton.setImageResource(R.drawable.favorited_movies);
+        } else {
+            favoritesButton.setImageResource(R.drawable.baseline_movie_creation_24);
+        }
+        favoritesButton.setOnClickListener(view -> {
+            if (favorites.size() > 0) {
+                Intent intent = new Intent(MainActivity.this, MainActivity2.class);
+                startActivity(intent);
+                System.out.println(favorites.toString());
             }
         });
         queue = Volley.newRequestQueue(this);
@@ -121,6 +140,11 @@ public class MainActivity extends AppCompatActivity {
                 favBtn.setTextColor(getResources().getColor(R.color.grey));
                 favBtn.setText(unfavorite);
             }
+            if (favorites.size() > 0) {
+                favoritesButton.setImageResource(R.drawable.favorited_movies);
+            } else {
+                favoritesButton.setImageResource(R.drawable.baseline_movie_creation_24);
+            }
             try {
                 writeToFile(this);
             } catch (IOException e) {
@@ -144,10 +168,6 @@ public class MainActivity extends AppCompatActivity {
         } else {
             searchToggle = 1;
         }
-
-        //Future reference
-        //https://api.themoviedb.org/3/movie/575322/credits?api_key=8159d23abb93295d11bd8c077eb4629d&language=en-US <movie cast call
-        //https://image.tmdb.org/t/p/w500/yQceTOuTGiNuy31LuehQW432t7p.jpg <cast image
 
         //Grabs random page from TMDB API with a set of parameters (Rarely movies get passed the TMDB filters)
         StringRequest request = new StringRequest(Request.Method.GET, url, response -> {
