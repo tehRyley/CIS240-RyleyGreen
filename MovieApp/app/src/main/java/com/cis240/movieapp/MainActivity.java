@@ -22,6 +22,8 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.io.File;
 import java.io.IOException;
 import java.util.Objects;
 import java.util.Random;
@@ -40,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
     static int searchToggle = 0;
     int yellow = R.color.yellow;
     String unfavorite = "Unfavorite";
+    File path = new File("/data/user/0/com.cis240.movieapp/files/favorites.txt");
     String favorite = "Favorite";
     String id;
     ImageView favoritesButton;
@@ -61,8 +64,10 @@ public class MainActivity extends AppCompatActivity {
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
         //Read File to keep favorites
         try {
-            if (favFile.exists()) {
+            if (path.exists()) {
                 readFromFile(this);
+            } else {
+                System.out.println("BROKENQFQ EWFQW");
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
