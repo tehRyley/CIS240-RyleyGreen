@@ -9,6 +9,8 @@ import android.util.Log;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import com.android.volley.Request;
@@ -19,9 +21,10 @@ import java.io.IOException;
 
 public class MainActivity2 extends AppCompatActivity {
     Button backBtn;
-    int value = 0;
+    static int value = 0;
     String favoritesUrl = "https://api.themoviedb.org/3/movie/"+ favorites.get(value) +"?api_key=8159d23abb93295d11bd8c077eb4629d&language=en-US";
     String id;
+    String MOVIE_STATE;
     ImageView imageView;
     TextView titleView;
     TextView releaseView;
@@ -42,7 +45,13 @@ public class MainActivity2 extends AppCompatActivity {
         favBtn = findViewById(R.id.button);
         scoreView = findViewById(R.id.rating);
         descView = findViewById(R.id.desc);
-        favoriteLoader(favoritesUrl);
+        //Check for saved instance
+        if (savedInstanceState == null) {
+            favoriteLoader(favoritesUrl);
+        } else {
+            String movieState = savedInstanceState.getString(MOVIE_STATE);
+            setState(movieState);
+        }
         leftBtn = findViewById(R.id.leftBtn);
         leftBtn.setOnClickListener(view -> {
             value -= 1;
@@ -110,6 +119,29 @@ public class MainActivity2 extends AppCompatActivity {
             }
         }, error -> Log.d("error", error.toString()));
         queue.add(request);
+    }
+
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString(MOVIE_STATE, getState());
+    }
+
+
+    public static String getState() {
+        return String.valueOf(value);
+    }
+
+    //Parse current index and page to maintain same movie
+    public void setState(String movieState) {
+        valueSet(movieState);
+    }
+
+    public void valueSet(String movieValue) {
+        value = Integer.parseInt(movieValue);
+        value = Integer.parseInt(movieValue);
+        favoritesUrl = "https://api.themoviedb.org/3/movie/"+ favorites.get(value) +"?api_key=8159d23abb93295d11bd8c077eb4629d&language=en-US";
+        favoriteLoader(favoritesUrl);
     }
 
 }
