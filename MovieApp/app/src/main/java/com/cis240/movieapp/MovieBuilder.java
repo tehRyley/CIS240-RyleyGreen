@@ -9,7 +9,7 @@ import com.squareup.picasso.Picasso;
 public class MovieBuilder {
     static String posterUrl = "https://image.tmdb.org/t/p/w500";
 
-    //Fill in with parsed movie info
+    //Fill in nodes with parsed movie info
     public static void buildMovie(String title, String release, String score, String poster, String desc, ImageView imageView, TextView titleView, TextView releaseView, TextView descView, TextView scoreView) {
         Picasso.get().load(posterUrl + poster).into(imageView);
         titleView.setText(title);

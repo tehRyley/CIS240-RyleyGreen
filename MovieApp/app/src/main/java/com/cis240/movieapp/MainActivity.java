@@ -86,6 +86,7 @@ public class MainActivity extends AppCompatActivity {
         //When tested on physical device the search bar doesn't auto focus (makes it less annoying)
         searchView = findViewById(R.id.searchView2);
         searchView.clearFocus();
+        //Makes anything user types into string and sends it to search method
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
@@ -101,6 +102,7 @@ public class MainActivity extends AppCompatActivity {
                 return false;
             }
         });
+        //Controls usability of MainActivity2 based on amount of favorites
         if (favorites.size() > 0) {
             favoritesButton.setImageResource(R.drawable.favorited_movies);
         } else {
@@ -115,6 +117,7 @@ public class MainActivity extends AppCompatActivity {
         queue = Volley.newRequestQueue(this);
         //Button to get new index and page then build movie
         Button button = findViewById(R.id.movieGen);
+        //Grabs a random movie from a large list based on popularity from TMDB
         button.setOnClickListener(view -> {
             ind = rand.nextInt(19);
             page = (rand.nextInt(19)) + 1;
@@ -131,6 +134,7 @@ public class MainActivity extends AppCompatActivity {
             String movieState = savedInstanceState.getString(MOVIE_STATE);
             setState(movieState);
         }
+        //Ability to add movies to favorites and saves it to file
         favBtn.setBackgroundColor(getResources().getColor(yellow));
         favBtn.setOnClickListener(view -> {
             if (favorites.contains(id)) {
@@ -157,6 +161,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    //Method for searching for movies
     private void searchMovie(String query) {
         searchUrl = "https://api.themoviedb.org/3/search/movie?api_key=8159d23abb93295d11bd8c077eb4629d&language=en-US&query=" + query + "&page=1&include_adult=false";
         ind = 0;

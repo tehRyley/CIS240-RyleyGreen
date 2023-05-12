@@ -39,6 +39,7 @@ public class MainActivity2 extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
+        //Set to nodes
         imageView = findViewById(R.id.poster);
         titleView = findViewById(R.id.title);
         releaseView = findViewById(R.id.release);
@@ -52,6 +53,7 @@ public class MainActivity2 extends AppCompatActivity {
             String movieState = savedInstanceState.getString(MOVIE_STATE);
             setState(movieState);
         }
+        //Left and right buttons for traversing favorites
         leftBtn = findViewById(R.id.leftBtn);
         leftBtn.setOnClickListener(view -> {
             value -= 1;
@@ -70,6 +72,7 @@ public class MainActivity2 extends AppCompatActivity {
             favoritesUrl = "https://api.themoviedb.org/3/movie/"+ favorites.get(value) +"?api_key=8159d23abb93295d11bd8c077eb4629d&language=en-US";
             favoriteLoader(favoritesUrl);
         });
+        //Lets user unfavorite movie and re favorite if done before moving to next movie
         favBtn.setOnClickListener(view -> {
             if (favorites.contains(id)) {
                 favorites.remove(id);
@@ -92,6 +95,7 @@ public class MainActivity2 extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        //Back to MainActivity
         backBtn = findViewById(R.id.backBtn);
         backBtn.setBackgroundColor(ContextCompat.getColor(this, R.color.red));
         backBtn.setOnClickListener(view -> {
@@ -100,6 +104,7 @@ public class MainActivity2 extends AppCompatActivity {
         });
     }
 
+    //Parses needed info to fill in MainActivity2
     public void favoriteLoader(String url){
         StringRequest request = new StringRequest(Request.Method.GET, url, response -> {
             try {
@@ -132,13 +137,13 @@ public class MainActivity2 extends AppCompatActivity {
         return String.valueOf(value);
     }
 
-    //Parse current index and page to maintain same movie
+    //Pass current value to create and run a query to fill in MainActivity2 with current info
     public void setState(String movieState) {
         valueSet(movieState);
     }
 
+    //
     public void valueSet(String movieValue) {
-        value = Integer.parseInt(movieValue);
         value = Integer.parseInt(movieValue);
         favoritesUrl = "https://api.themoviedb.org/3/movie/"+ favorites.get(value) +"?api_key=8159d23abb93295d11bd8c077eb4629d&language=en-US";
         favoriteLoader(favoritesUrl);

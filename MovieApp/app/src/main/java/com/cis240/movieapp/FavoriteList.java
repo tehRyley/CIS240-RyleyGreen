@@ -16,6 +16,7 @@ import java.util.List;
 public class FavoriteList extends AppCompatActivity {
     static public List<String> favorites = new ArrayList<>();
     static File favFile = new File( "favorites.txt");
+    //Write favorites to file to read on next time you open app
     public static void writeToFile(Context context) throws IOException {
         FileOutputStream outputStream = context.openFileOutput(favFile.getName(), Context.MODE_PRIVATE);
         PrintWriter writer = new PrintWriter(outputStream);
@@ -25,6 +26,7 @@ public class FavoriteList extends AppCompatActivity {
         writer.close();
     }
 
+    //Reads the file that stores favorites between app closing and opening
     public static void readFromFile(Context context) throws IOException {
         FileInputStream fis = context.openFileInput(favFile.getName());
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(fis))) {
